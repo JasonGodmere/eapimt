@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import requestor
+
 ## DOCSTRINGS
 
 ### System Details - Requests ###
 # Refer to https://developer-v4.enphase.com/docs 
 # for details
+
 
 def systems(**kwargs):
     """
@@ -18,12 +21,12 @@ def systems(**kwargs):
 
     Parameters
     ----------
-    page : int, optional
+    page (query) : int, optional
         The page to be returned (default=1, min=1)
-    size : int, optional
+    size (query) : int, optional
         Maximum number of records shown per page 
         (default=10, min=1, max=100)
-    sort_by : str, optional
+    sort_by (query) : str, optional
         Returns list of systems sorted by <sort_by> 
         field. To get ASC order sorted list, user 
         sort_by = . To get DESC order sorted list, 
@@ -36,7 +39,10 @@ def systems(**kwargs):
             id, name, last_report_date, -id, -name, 
             -last_report_date
     """
-    pass
+    res = requestor.get(
+        "/api/v4/systems",
+        **kwargs)
+    return res
 
 
 def search(**kwargs):
@@ -60,7 +66,10 @@ def search(**kwargs):
         See developer-v4.enphase.com/docs under
         systems/search for details on usage
     """
-    pass
+    res = requestor.get(
+        "/api/v4/systems/search",
+        **kwargs)
+    return res
 
 
 def system_id(system_id):
@@ -75,7 +84,9 @@ def system_id(system_id):
     system_id : int, required
         unique id of an enphase system
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}")
+    return res
 
 
 def summary(system_id):
@@ -88,10 +99,12 @@ def summary(system_id):
 
     Parameters
     ----------
-    system_id : int, required
+    system_id (path) : int, required
         unique id of an enphase system
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/summary")
+    return res
 
 
 def devices(system_id):
@@ -108,10 +121,12 @@ def devices(system_id):
     system_id : int, required
         unique id of an enphase system
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/devices")
+    return res
 
 
-def retrieve_system_id(sn):
+def retrieve_system_id(serial_num):
     """
     makes request to -> 
         /api/v4/systems/retrieve_system_id
@@ -123,13 +138,16 @@ def retrieve_system_id(sn):
 
     Parameters
     ----------
-    sn : int, required
+    serial_num : int, required
         unique id of gateway monitor
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/retrieve_system_id",
+        serial_num=serial_num)
+    return res
 
 
-def inverters_summary(id_sn):
+def inverters_summary(**kwargs):
     """
     makes request to -> 
         /api/v4/systems/inverters_summary
@@ -141,11 +159,16 @@ def inverters_summary(id_sn):
 
     Parameters
     ----------
-    id_sn : int, required
-        unique id of an enphase system or
-        gateway serial number
+    NOTE: Only one of the two params are necessary
+    site_id : int, required
+        unique id of an enphase system
+    envoy_serial_number : int, required
+        serial number of system gateway
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/inverters_summary_by_envoy_or_site",
+        **kwargs)
+    return res
 
 
 ### Site Level Production Monitoring ###
@@ -166,7 +189,9 @@ def production_meter_readings(system_id):
     system_id : int, required
         unique id of an enphase system
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/production_meter_readings")
+    return res
 
 
 def rgm_stats(system_id, **kwargs):
@@ -188,7 +213,10 @@ def rgm_stats(system_id, **kwargs):
     end_at : int, optional (default=start_at+1week)
         end of reporting period in unix epoch time.
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/rgm_stats",
+        **kwargs)
+    return res
 
 
 def energy_lifetime(system_id, **kwargs):
@@ -218,7 +246,10 @@ def energy_lifetime(system_id, **kwargs):
         microinverters and the meter on the system. 
         Other values are ignored.
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/energy_lifetime",
+        **kwargs)
+    return res
 
 
 def production_micro(system_id, **kwargs):
@@ -251,7 +282,10 @@ def production_micro(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/telemetry/production_micro",
+        **kwargs)
+    return res
 
 
 def production_meter(system_id, **kwargs):
@@ -279,7 +313,10 @@ def production_meter(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/telemetry/production_meter",
+        **kwargs)
+    return res
 
 
 def battery(system_id, **kwargs):
@@ -307,7 +344,10 @@ def battery(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/telemetry/battery",
+        **kwargs)
+    return res
 
 
 def consumption_lifetime(system_id, **kwargs):
@@ -334,10 +374,13 @@ def consumption_lifetime(system_id, **kwargs):
         end date of reporting period with YYYY-MM-DD
         format
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/consumption_lifetime",
+        **kwargs)
+    return res
 
 
-    def consumption_meter(system_id, **kwargs):
+def consumption_meter(system_id, **kwargs):
     """
     makes request to -> 
         /api/v4/systems/{system_id}/telemetry/
@@ -367,14 +410,17 @@ def consumption_lifetime(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/telemetry/consumption_meter",
+        **kwargs)
+    return res
 
 
-def micro_telemetry(system_id, **kwargs):
+def micro_telemetry(system_id, serial_no, **kwargs):
     """
     makes request to -> 
         /api/v4/systems/{system_id}/devices/
-        micros/{sn}/telemetry
+        micros/{serial_no}/telemetry
 
     Retrieves telemetry for single micro/pcu.
 
@@ -390,7 +436,7 @@ def micro_telemetry(system_id, **kwargs):
     ----------
     system_id : int, required
         unique id of an enphase system
-    sn : str, required
+    serial_no : str, required
         Serial number of the individual solar
         microinverter
     start_at : int, optional (default=midnight)
@@ -401,14 +447,17 @@ def micro_telemetry(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/devices/micros/{serial_no}/telemetry",
+        **kwargs)
+    return res
 
 
-def acb_telemetry(system_id, **kwargs):
+def acb_telemetry(system_id, serial_no, **kwargs):
     """
     makes request to -> 
         /api/v4/systems/{system_id}/devices/
-        acbs/{sn}/telemetry
+        acbs/{serial_no}/telemetry
 
     Retrieves telemetry for single ACB.
 
@@ -424,7 +473,7 @@ def acb_telemetry(system_id, **kwargs):
     ----------
     system_id : int, required
         unique id of an enphase system
-    sn : str, required
+    serial_no : str, required
         Serial number of the acb
     start_at : int, optional (default=midnight)
         Start time for fetching the telemetry data 
@@ -434,14 +483,17 @@ def acb_telemetry(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/devices/acbs/{serial_no}/telemetry",
+        **kwargs)
+    return res
 
 
-def encharge_telemetry(system_id, **kwargs):
+def encharge_telemetry(system_id, serial_no, **kwargs):
     """
     makes request to -> 
         /api/v4/systems/{system_id}/devices/
-        encharges/{sn}/telemetry
+        encharges/{serial_no}/telemetry
 
     Retrieves telemetry for single Encharge.
 
@@ -457,7 +509,7 @@ def encharge_telemetry(system_id, **kwargs):
     ----------
     system_id : int, required
         unique id of an enphase system
-    sn : str, required
+    serial_no : str, required
         Serial number of the acb
     start_at : int, optional (default=midnight)
         Start time for fetching the telemetry data 
@@ -467,4 +519,7 @@ def encharge_telemetry(system_id, **kwargs):
         Possible values are 'week', 'day', '
         15mins'. Default is 'day'
     """
-    pass
+    res = requestor.get(
+        f"/api/v4/systems/{system_id}/devices/encharges/{serial_no}/telemetry",
+        **kwargs)
+    return res
