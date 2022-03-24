@@ -5,11 +5,11 @@ from .context import eapimt
 import unittest
 
 
-class MonitoringTestSuite(unittest.TestCase):
+class CommissioningTestSuite(unittest.TestCase):
     """Advanced test cases."""
 
     def first(self):
-        self.assertIsNone()
+        self.assertIsNone(None)
 
 
 if __name__ == '__main__':

@@ -8,13 +8,16 @@ BASE_URL = "https://api.enphaseenergy.com"
 
 def format_uri(slug, **queries):
     # append queries to uri string, return result
+    if not queries:
+        return BASE_URL + slug
+
     query_str = ""
     for key, item in queries.items():
         # special case for first iteration
         if query_str == "":
-            query_str.append(f"?{key}={item}")
+            query_str = f"?{key}={item}"
         else:
-            query_str.append(f"&{key}={item}")
+            query_str += f"&{key}={item}"
     
     # create and return queried uri string
     return BASE_URL + slug + query_str
