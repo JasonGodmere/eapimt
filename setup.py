@@ -17,9 +17,12 @@ setup(
     description='Enphase API Management Tool',
     long_description=readme,
     author='Jason Godmere',
-    author_email='na',
+    #author_email='na',
     url='https://github.com/JasonGodmere/eapimt',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    package_dir={
+        "": "eapimt"},
+    packages=find_packages(
+        exclude=('tests', 'docs')),
 )
 
