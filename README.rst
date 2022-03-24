@@ -1,9 +1,9 @@
-Sample Module Repository
-========================
+eapimt
+===========================
 
-This simple project is an example repo for Python projects.
-
-`Learn more <http://www.kennethreitz.org/essays/repository-structure-and-python>`_.
+This tool is in no way affiliated with Enphase, it is intended
+for use in the open source community as a simplified way of
+interfacing and using their api service.
 
 ---------------
 
