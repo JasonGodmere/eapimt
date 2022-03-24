@@ -12,13 +12,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='sample',
+    name='eapimt',
     version='0.1.0',
-    description='Sample package for Python-Guide.org',
+    description='Enphase API Management Tool',
     long_description=readme,
-    author='Kenneth Reitz',
-    author_email='me@kennethreitz.com',
-    url='https://github.com/kennethreitz/samplemod',
+    author='Jason Godmere',
+    author_email='na',
+    url='https://github.com/JasonGodmere/eapimt',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )

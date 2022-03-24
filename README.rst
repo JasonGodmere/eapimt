@@ -1,5 +1,5 @@
 eapimt
-===========================
+===============
 
 This tool is in no way affiliated with Enphase, it is intended
 for use in the open source community as a simplified way of
