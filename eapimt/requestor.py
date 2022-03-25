@@ -2,8 +2,6 @@
 
 import requests
 from requests.auth import HTTPBasicAuth
-import json
-import os
 
 BASE_URL = "https://api.enphaseenergy.com"
 ACCESS = None
@@ -124,15 +122,13 @@ def new_partner_token(email, password, client_id, client_secret):
             },
             auth=HTTPBasicAuth(client_id, client_secret))
 
-    print(res.json())
-
     # filter for bad responses
     if res.status_code == 200:
         ACCESS = res.json()
         AUTH = {
-            "Authorization": ACCESS["token_type"] + " " + ACCESS["access_token"]
+            "Authorization": (
+                ACCESS["token_type"] + " " + ACCESS["access_token"])
         }
-        print(AUTH)
         return True
 
     return False

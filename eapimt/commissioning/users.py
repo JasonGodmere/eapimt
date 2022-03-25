@@ -7,7 +7,7 @@ from .. import requestor
 # for details
 
 
-def get_user(activation_id, user_id, **kwargs):
+def get_activations_user_id(activation_id, user_id, **kwargs):
     """
     makes request to -> 
         /api/v4/activations/{activation_id}/users/
@@ -34,5 +34,111 @@ def get_user(activation_id, user_id, **kwargs):
     """
     res = requestor.get(
         f"/api/v4/activations/{activation_id}/users/{user_id}",
+        **kwargs)
+    return res
+
+
+def put_activations_user_id(activation_id, user_id, user):
+    """
+    makes request to -> 
+        /api/v4/activations/{activation_id}/users/
+        {user_id}
+
+    Update user
+
+    Parameters
+    ----------
+    activation_id : int, required
+        unique id of an enphase system (system_id)
+    user_id : int, required
+    	unique id of an enphase user
+    user : object, required
+        see https://developer-v4.enphase.com/docs
+        for details
+    """
+    res = requestor.put(
+        f"/api/v4/activations/{activation_id}/users/{user_id}",
+        data=user)
+    return res
+
+
+def get_search(**kwargs):
+    """
+    makes request to -> 
+        /api/v4/users/search
+
+    Search User
+
+    Parameters
+    ----------
+    email : str, optional
+    	Email of user
+    """
+    res = requestor.get(
+        "/api/v4/users/search",
+        **kwargs)
+    return res
+
+
+def get_user_id(user_id, **kwargs):
+    """
+    makes request to -> 
+        /api/v4/users/{user_id}
+
+    Returns the requested user
+
+    Parameters
+    ----------
+    user_id : int, required
+    	unique id of an enphase user
+    expand : int, optional
+    	Passing expand params in the url with valid 
+    	option, then the response will contain company 
+    	object fields. values: company
+    """
+    res = requestor.get(
+        f"/api/v4/users/{user_id}",
+        **kwargs)
+    return res
+
+
+def put_user_id(user_id, user):
+    """
+    makes request to -> 
+        /api/v4/users/{user_id}
+
+    Update user
+
+    Parameters
+    ----------
+    user_id : int, required
+    	unique id of an enphase user
+    user : object, required
+        see https://developer-v4.enphase.com/docs
+        for details
+    """
+    res = requestor.put(
+        f"/api/v4/users/{user_id}",
+        data=user)
+    return res
+
+
+def get_self(**kwargs):
+    """
+    makes request to -> 
+        /api/v4/users/self
+
+    Return the current logged in
+    user details
+
+    Parameters
+    ----------
+    expand : int, optional
+    	Passing expand params in the url with valid 
+    	option, then the response will contain company 
+    	object fields. values: company
+    """
+    res = requestor.get(
+        f"/api/v4/users/self",
         **kwargs)
     return res

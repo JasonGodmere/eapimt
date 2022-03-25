@@ -43,7 +43,7 @@ def get_systems(**kwargs):
     return res
 
 
-def search(**kwargs):
+def search(params={}, **kwargs):
     """
     makes request to ->
         /api/v4/systems/search
@@ -66,6 +66,7 @@ def search(**kwargs):
     """
     res = requestor.get(
         "/api/v4/systems/search",
+        data=params,
         **kwargs)
     return res
 

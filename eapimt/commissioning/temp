@@ -1,0 +1,16 @@
+def g(**kwargs):
+    """
+    makes request to -> 
+        /
+
+    R
+
+    Parameters
+    ----------
+    n : s, o
+    	I
+    """
+    res = requestor.(
+        "",
+        **kwargs)
+    return res

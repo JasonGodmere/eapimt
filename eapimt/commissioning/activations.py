@@ -7,16 +7,13 @@ from .. import requestor
 # for details
 
 
-def get_activations(**kwargs):
+def get(**kwargs):
     """
     makes request to -> 
         /api/v4/partner/activations
 
     Returns a list of activations for which the 
     user can make API requests.
-
-    By default, activations are returned in batches 
-    of 100. The maximum page size is 1000.
 
     Parameters
     ----------
@@ -55,16 +52,162 @@ def get_activations(**kwargs):
     return res
 
 
+def post(system):
+    """
+    makes request to -> 
+        /api/v4/partner/activations
+
+    Create new activation
+
+    Parameters
+    ----------
+    system : object, required
+    	see https://developer-v4.enphase.com/docs
+        for details
+    """
+    res = requestor.post(
+        "/api/v4/partner/activations",
+        data=system)
+    return res
 
 
+def get_id(id, **kwargs):
+    """
+    makes request to -> 
+        /api/v4/partner/activations/{id}
+
+    Retrieves an activation by id
+
+    Parameters
+    ----------
+    id : int, required
+    	The Enlighten ID of the system
+    expand : str, optional
+        add values to response. values:
+        owner, owner.company, host,
+        host.company
+    """
+    res = requestor.get(
+        f"/api/v4/partner/activations/{id}",
+        **kwargs)
+    return res
 
 
+def put_id(id, system, **kwargs):
+    """
+    makes request to -> 
+        /api/v4/partner/activations/{id}
+
+    Update an activation
+
+    Parameters
+    ----------
+    id : int, required
+    	The Enlighten ID of the system
+    system : object, required
+        see https://developer-v4.enphase.com/docs
+        for details
+    """
+    res = requestor.put(
+        f"/api/v4/partner/activations/{id}",
+        data=system,
+        **kwargs)
+    return res
 
 
+def delete_id(id):
+    """
+    makes request to -> 
+        /api/v4/activations/{id}
+
+    Delete an activation by id
+
+    Parameters
+    ----------
+    id : int, required
+    	unique id of activation/system
+    """
+    res = requestor.delete(
+        f"/api/v4/activations/{id}")
+    return res
 
 
+def post_user_id(activation_id, user_id):
+    """
+    makes request to -> 
+        /api/v4/activations/{activation_id}/
+        users/{user_id}
+
+    Grant access a user access to activation
+    by user_id
+
+    Parameters
+    ----------
+    activation_id : int, required
+    	unique id of activation/system
+    user_id : int, required
+        unique id of the user
+    """
+    res = requestor.post(
+        f"/api/v4/activations/{activation_id}/users/{user_id}")
+    return res
 
 
+def delete_user_id(activation_id, user_id):
+    """
+    makes request to -> 
+        /api/v4/activations/{activation_id}/
+        users/{user_id}
+
+    Revoke access of a user from activation
+
+    Parameters
+    ----------
+    activation_id : int, required
+    	unique id of activation/system
+    user_id : int, required
+        unique id of the user
+    """
+    res = requestor.delete(
+        f"/api/v4/activations/{activation_id}/users/{user_id}")
+    return res
 
 
+def post_production_mode(activation_id, production_mode):
+    """
+    makes request to -> 
+        /api/v4/activations/{activation_id}/
+        ops/production_mode
 
+    Set production mode
+
+    Parameters
+    ----------
+    activation_id : int, required
+    	unique id of activation/system
+    production_mode : object, required
+        see https://developer-v4.enphase.com/docs
+        for details
+    """
+    res = requestor.post(
+        f"/api/v4/activations/{activation_id}/ops/production_mode",
+        data=production_mode)
+    return res
+
+
+def get_production_mode(activation_id):
+    """
+    makes request to -> 
+        /api/v4/activations/{activation_id}/
+        ops/production_mode
+
+    Get production mode
+
+    Parameters
+    ----------
+    activation_id : int, required
+    	unique id of activation/system
+    """
+    res = requestor.get(
+        f"/api/v4/activations/{activation_id}/ops/production_mode")
+    return res
