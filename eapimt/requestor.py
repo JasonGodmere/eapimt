@@ -3,21 +3,31 @@
 import os
 import json
 import requests
+import pathlib
 from requests.auth import HTTPBasicAuth
 
 BASE_URL = "https://api.enphaseenergy.com"
-ROOT_DIR = os.path.abspath(os.curdir)
 
 class Access:
     data = None
-    auth = None
-    dpath = os.path.join(ROOT_DIR, "resources")
-    fpath = os.path.join(dpath, "token.json")
+    dpath = None
+    fpath = None
 
     def init(api_key, client_id, client_secret):
         Access.key = api_key
         Access.client_id = client_id
         Access.client_secret = client_secret
+        Access.dpath = os.path.join(
+                pathlib.Path().resolve(), 
+                "resources")
+        Access.fpath = os.path.join(
+                Access.dpath, 
+                "token.json")
+
+    def auth():
+        token_type = Access.data["token_type"]
+        access_token = Access.data["access_token"]
+        return { "Authorization": f"{token_type} {access_token}"}
 
     def load_token():
         # loads token.json file from filepath (fp)
@@ -66,10 +76,6 @@ class Access:
             Access.data = res.json()
             token_type = Access.data["token_type"]
             access_token = Access.data["access_token"]
-            Access.auth = {
-                "Authorization": 
-                    token_type + " " + access_token
-            }
             Access.save_token()
             return True
 
@@ -107,7 +113,7 @@ def get(slug, params={}, **queries):
     return requests.get(
         format_uri(slug, key=Access.key, **queries),
         params=params,
-        headers=Access.auth)
+        headers=Access.auth())
 
 
 def post(slug, params={}, **queries):
@@ -124,7 +130,7 @@ def post(slug, params={}, **queries):
     return requests.post(
         format_uri(slug, key=Access.key, **queries),
         params=params,
-        headers=Access.auth)
+        headers=Access.auth())
 
 
 def put(slug, params={}, **queries):
@@ -141,7 +147,7 @@ def put(slug, params={}, **queries):
     return requests.put(
         format_uri(slug, key=Access.key, **queries),
         params=params,
-        headers=Access.auth)
+        headers=Access.auth())
 
 
 def delete(slug, params={}, **queries):
@@ -158,7 +164,7 @@ def delete(slug, params={}, **queries):
     return requests.delete(
         format_uri(slug, key=Access.key, **queries),
         params=params,
-        headers=Access.auth)
+        headers=Access.auth())
 
 
 
