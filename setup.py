@@ -3,6 +3,7 @@
 # Learn more: https://github.com/kennethreitz/setup.py
 
 from setuptools import setup, find_packages
+import os
 
 
 with open('README.rst') as f:
@@ -10,6 +11,8 @@ with open('README.rst') as f:
 
 with open('LICENSE') as f:
     license = f.read()
+
+ROOT_DIR = os.path.abspath(os.curdir)
 
 setup(
     name='eapimt',
@@ -20,7 +23,7 @@ setup(
     #author_email='na',
     url='https://github.com/JasonGodmere/eapimt',
     license=license,
-    package_dir={"": "/Users/jasongodmere/Desktop/dev/Kumukit Support/Microservices/enphase_viewer/eapimt"},
+    package_dir={"": ROOT_DIR},
     packages=find_packages(
         exclude=('tests', 'docs')),
     install_requires=['requests']
