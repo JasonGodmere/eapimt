@@ -4,8 +4,59 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 BASE_URL = "https://api.enphaseenergy.com"
-ACCESS = None
-AUTH = None
+
+class Access:
+    data = None
+    auth = None
+
+    def init(api_key, client_id, client_secret):
+        Access.key = api_key
+        Access.client_id = client_id
+        Access.client_secret = client_secret
+
+    def new_partner_token(email, password):
+        """
+        Attempts authentication request with
+        given credentails for new auth_token
+        only for Enphase Partner Applications
+
+        Parameters
+        ----------
+        email : str, required
+            login email for account
+        password : str, required
+            login password for account
+        client_id : str, required
+            unique application client identifier
+        client_secret : str, required
+            unique application client secret key
+
+        Returns
+        -------
+        success_indicator : bool
+        """
+        res = requests.post(format_uri("/oauth/token"),
+            params={
+                "grant_type": "password",
+                "username": email,
+                "password": password
+            },
+            auth=HTTPBasicAuth(
+                Access.client_id, 
+                Access.client_secret))
+
+        # filter for bad responses
+        if res.status_code == 200:
+            Access.data = res.json()
+            token_type = Access.data["token_type"]
+            access_token = Access.data["access_token"]
+            Access.auth = {
+                "Authorization": 
+                    token_type + " " + access_token
+            }
+            return True
+
+        return False
 
 
 def format_uri(slug, **queries):
@@ -37,9 +88,9 @@ def get(slug, params={}, **queries):
         body params for requests
     """
     return requests.get(
-        format_uri(slug, **queries),
+        format_uri(slug, key=Access.key, **queries),
         params=params,
-        header=AUTH)
+        headers=Access.auth)
 
 
 def post(slug, params={}, **queries):
@@ -54,9 +105,9 @@ def post(slug, params={}, **queries):
         body params for requests
     """
     return requests.post(
-        format_uri(slug, **queries),
+        format_uri(slug, key=Access.key, **queries),
         params=params,
-        header=AUTH)
+        headers=Access.auth)
 
 
 def put(slug, params={}, **queries):
@@ -71,9 +122,9 @@ def put(slug, params={}, **queries):
         body params for requests
     """
     return requests.put(
-        format_uri(slug, **queries),
+        format_uri(slug, key=Access.key, **queries),
         params=params,
-        header=AUTH)
+        headers=Access.auth)
 
 
 def delete(slug, params={}, **queries):
@@ -88,50 +139,9 @@ def delete(slug, params={}, **queries):
         body params for requests
     """
     return requests.delete(
-        format_uri(slug, **queries),
+        format_uri(slug, key=Access.key, **queries),
         params=params,
-        header=AUTH)
-
-
-def new_partner_token(email, password, client_id, client_secret):
-    """
-    Attempts authentication request with
-    given credentails for new auth_token
-    only for Enphase Partner Applications
-
-    Parameters
-    ----------
-    email : str, required
-        login email for account
-    password : str, required
-        login password for account
-    client_id : str, required
-        unique application client identifier
-    client_secret : str, required
-        unique application client secret key
-
-    Returns
-    -------
-    success_indicator : bool
-    """
-    res = requests.post(format_uri("/oauth/token"),
-            params={
-                "grant_type": "password",
-                "username": email,
-                "password": password
-            },
-            auth=HTTPBasicAuth(client_id, client_secret))
-
-    # filter for bad responses
-    if res.status_code == 200:
-        ACCESS = res.json()
-        AUTH = {
-            "Authorization": (
-                ACCESS["token_type"] + " " + ACCESS["access_token"])
-        }
-        return True
-
-    return False
+        headers=Access.auth)
 
 
 
