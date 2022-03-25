@@ -25,7 +25,7 @@ setup(
     license=license,
     package_dir={"": ROOT_DIR},
     packages=find_packages(
-        exclude=('tests', 'docs')),
+        exclude=('tests', 'docs', 'resources')),
     install_requires=['requests']
 )
 

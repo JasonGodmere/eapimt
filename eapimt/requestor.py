@@ -1,18 +1,38 @@
 # -*- coding: utf-8 -*-
 
+import os
+import json
 import requests
 from requests.auth import HTTPBasicAuth
 
 BASE_URL = "https://api.enphaseenergy.com"
+ROOT_DIR = os.path.abspath(os.curdir)
 
 class Access:
     data = None
     auth = None
+    dpath = os.path.join(ROOT_DIR, "resources")
+    fpath = os.path.join(dpath, "token.json")
 
     def init(api_key, client_id, client_secret):
         Access.key = api_key
         Access.client_id = client_id
         Access.client_secret = client_secret
+
+    def load_token():
+        # loads token.json file from filepath (fp)
+        with open(Access.fpath, "r") as file:
+            Access.data = json.load(file)
+
+    def save_token():
+        # saves token to token.json file resources
+        # dir, creates directory if needed
+        if not os.path.isdir(Access.dpath):
+            os.mkdir(Access.dpath)
+
+        # save token
+        with open(Access.fpath, "w") as file:
+            json.dump(Access.data, file, indent=4)
 
     def new_partner_token(email, password):
         """
@@ -26,10 +46,6 @@ class Access:
             login email for account
         password : str, required
             login password for account
-        client_id : str, required
-            unique application client identifier
-        client_secret : str, required
-            unique application client secret key
 
         Returns
         -------
@@ -54,6 +70,7 @@ class Access:
                 "Authorization": 
                     token_type + " " + access_token
             }
+            Access.save_token()
             return True
 
         return False
