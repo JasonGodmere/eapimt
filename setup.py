@@ -20,9 +20,9 @@ setup(
     #author_email='na',
     url='https://github.com/JasonGodmere/eapimt',
     license=license,
-    package_dir={
-        "": "eapimt"},
+    package_dir={"": "/Users/jasongodmere/Desktop/dev/Kumukit Support/Microservices/enphase_viewer/eapimt"},
     packages=find_packages(
         exclude=('tests', 'docs')),
+    install_requires=['requests']
 )
 

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import requests
+from requests.auth import HTTPBasicAuth
+import json
+import os
 
-AUTH = {}
 BASE_URL = "https://api.enphaseenergy.com"
+ACCESS = None
+AUTH = None
 
 
 def format_uri(slug, **queries):
@@ -89,3 +93,60 @@ def delete(slug, params={}, **queries):
         format_uri(slug, **queries),
         params=params,
         header=AUTH)
+
+
+def new_partner_token(email, password, client_id, client_secret):
+    """
+    Attempts authentication request with
+    given credentails for new auth_token
+    only for Enphase Partner Applications
+
+    Parameters
+    ----------
+    email : str, required
+        login email for account
+    password : str, required
+        login password for account
+    client_id : str, required
+        unique application client identifier
+    client_secret : str, required
+        unique application client secret key
+
+    Returns
+    -------
+    success_indicator : bool
+    """
+    res = requests.post(format_uri("/oauth/token"),
+            params={
+                "grant_type": "password",
+                "username": email,
+                "password": password
+            },
+            auth=HTTPBasicAuth(client_id, client_secret))
+
+    print(res.json())
+
+    # filter for bad responses
+    if res.status_code == 200:
+        ACCESS = res.json()
+        AUTH = {
+            "Authorization": ACCESS["token_type"] + " " + ACCESS["access_token"]
+        }
+        print(AUTH)
+        return True
+
+    return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
