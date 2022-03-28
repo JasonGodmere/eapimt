@@ -99,6 +99,20 @@ def format_uri(slug, **queries):
     return BASE_URL + slug + query_str
 
 
+def request_error(req):
+    def wrapper(*args, **kwargs):
+        # make request with given function
+        res = req(*args, **kwargs)
+        # Raises exception for status codes
+        # for appropriate responses
+        res.raise_for_status()
+        # if no excetion raised, return res
+        return res
+
+    return wrapper
+
+
+@request_error
 def get(slug, params={}, **queries):
     """
     Makes requests to enphase GET uri's
@@ -116,6 +130,7 @@ def get(slug, params={}, **queries):
         headers=Access.auth())
 
 
+@request_error
 def post(slug, params={}, **queries):
     """
     Makes requests to enphase POST uri's
@@ -133,6 +148,7 @@ def post(slug, params={}, **queries):
         headers=Access.auth())
 
 
+@request_error
 def put(slug, params={}, **queries):
     """
     Makes requests to enphase PUT uri's
@@ -150,6 +166,7 @@ def put(slug, params={}, **queries):
         headers=Access.auth())
 
 
+@request_error
 def delete(slug, params={}, **queries):
     """
     Makes requests to enphase DELETE uri's
